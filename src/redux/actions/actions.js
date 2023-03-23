@@ -17,11 +17,12 @@ export const GET_GAME = "GET_GAME";
 export const GET_WISH_LIST = "GET_WISH_LIST";
 export const POST_WISH_LIST = "POST_WISH_LIST";
 export const POST_SUPPORT = "POST_SUPPORT";
+export const GET_USERS = "GET_USERS"
+
 export const UPDATE_GAME = 'UPDATE_GAME';
 export const GET_DETAIL = 'GET_DETAIL'
-export const GET_REVIEWS = "GET_REVIEWS";
-export const ADD_REVIEW = "ADD_REVIEW";
-//>>>>>>> 43ac23bdf9479a5fd8802c3b5a209de9c210fc01
+export const CLEAN_USERS = "CLEAN_USERS"
+
 
 // RUTAS PARA LA AUTENTICACIÓN
 
@@ -43,16 +44,18 @@ export const DELETE_PRODUCT_CART_LOCAL_STORAGE = 'DELETE_PRODUCT_CART_LOCAL_STOR
 
 export const GET_ORDER_ID = 'GET_ORDER_ID'
 
-export const GET_USERS = "GET_USERS"
+// RUTA PARA OBTENER LA LIBRERÍA
 
-// DASHBOARD
+export const GET_PRODUCTS_LIBRARY = 'GET_PRODUCTS_LIBRARY'
+
+// RUTAS PARA EL PANEL DE ADMINISTRADOR
 
 export const PUT_PRODUCT_DASH = "PUT_PRODUCT_DASH"
 
-export const CLEAN_USERS = "CLEAN_USERS"
+// RUTAS PARA LAS REVIEWS
 
-// ACCIONES PARA LA AUTENTICACIÓN
-
+export const GET_REVIEWS = "GET_REVIEWS"
+export const ADD_REVIEW = "ADD_REVIEW"
 
 
 export const Register = (data) => (dispatch) => {
@@ -75,7 +78,7 @@ export const Login_OK = (data) => {
 //action que trae todos los juegos
 export function GetGames(){
   return async function (dispatch) {
-    let Json = await axios.get(`http://localhost:3000/products`);
+    let Json = await axios.get(`https://apikoalaxy-production.up.railway.app/products`);
     dispatch({
       type: GET_GAMES,
       payload: Json.data,
@@ -87,7 +90,7 @@ export function GetGames(){
 
 export function GetGame(name) {
   return async function (dispatch) {
-    let json = await axios.get("http://localhost:3000/products?name=" + name);
+    let json = await axios.get("https://apikoalaxy-production.up.railway.app/products?name=" + name);
     dispatch({
       type: GET_GAMES,
       payload: json.data,
@@ -98,7 +101,7 @@ export function GetGame(name) {
 //action que trae juegos por id (sirve para el detail)
 export function GetGameById(id) {
   return async function (dispatch) {
-    var json = await axios.get(`http://localhost:3000/products/${id}`);
+    var json = await axios.get(`https://apikoalaxy-production.up.railway.app/products/${id}`);
     return dispatch({
       type: GET_BY_ID,
       payload: json.data,
@@ -108,7 +111,7 @@ export function GetGameById(id) {
 
 export function GetDetail(id) {
   return async function(dispatch) {
-      const json = await axios(`http://localhost:3000/products/${id}`);
+      const json = await axios(`https://apikoalaxy-production.up.railway.app/products/${id}`);
       return dispatch({
           type: GET_DETAIL,
           payload: json.data
@@ -120,7 +123,7 @@ export function GetDetail(id) {
 //action que trae todos los generos
 export function GetGenres() {
   return async function (dispatch) {
-    let json = await axios.get(`http://localhost:3000/genres`);
+    let json = await axios.get(`https://apikoalaxy-production.up.railway.app/genres`);
     dispatch({
       type: GET_GENRES,
       payload: json.data,
@@ -130,7 +133,7 @@ export function GetGenres() {
 
 export function GetCompanies() {
   return async function (dispatch) {
-    let json = await axios.get("http://localhost:3000/company");
+    let json = await axios.get("https://apikoalaxy-production.up.railway.app/company");
     dispatch({
       type: GET_COMPANIES,
       payload: json.data,
@@ -140,19 +143,19 @@ export function GetCompanies() {
 
 //action PostGame sirve para el crear un juego
 export function PostGame(payload) {
-  var json = axios.post(`http://localhost:3000/products`, payload);
+  var json = axios.post(`https://apikoalaxy-production.up.railway.app/products`, payload);
   return { type: POST_GAME, payload: json };
 }
 
 export function DeleteGame(idGame){
   return async function(dispatch){
-      return axios.delete(`http://localhost:3000/products/${idGame}`)
+      return axios.delete(`https://apikoalaxy-production.up.railway.app/products/${idGame}`)
   }
 }
 
 export function UpdateGame(id, payload) {
   return async function(dispatch) {
-      const json = await axios.put(`http://localhost:3000/products/update/${id}`, payload);
+      const json = await axios.put(`https://apikoalaxy-production.up.railway.app/products/update/${id}`, payload);
       return dispatch({
           type: UPDATE_GAME,
           payload: json.data
@@ -220,7 +223,7 @@ export function CleanGames() {
 
 export function GetWishList(id) {
   return async function (dispatch) {
-    var json = await axios.get(`http://localhost:3000/wishlist/${id}`);
+    var json = await axios.get(`https://apikoalaxy-production.up.railway.app/wishlist/${id}`);
     return dispatch({
       type: GET_WISH_LIST,
       payload: json.data,
@@ -230,7 +233,7 @@ export function GetWishList(id) {
 
 export function PostWishList(productWishId) {
   return async function () {
-    return axios.post(`http://localhost:3000/wishlist/`, productWishId);
+    return axios.post(`https://apikoalaxy-production.up.railway.app/wishlist/`, productWishId);
   };
 }
 
@@ -238,7 +241,7 @@ export function DeleteWishListProduct(payload){
 
   console.log(payload);
   return async function () {
-    return await axios.delete(`http://localhost:3000/wishlist/delete/?productWishId=${payload}`);
+    return await axios.delete(`https://apikoalaxy-production.up.railway.app/wishlist/delete/?productWishId=${payload}`);
   };
 }
 
@@ -247,7 +250,7 @@ export function DeleteWishListProduct(payload){
 
 export function getInCart(id) {
   return async function (dispatch) {
-    let json = await axios.get(`http://localhost:3000/cart/${id}`);
+    let json = await axios.get(`https://apikoalaxy-production.up.railway.app/cart/${id}`);
     dispatch({
       type: GET_ALL_CART,
       payload: json.data,
@@ -266,27 +269,27 @@ export function setAllCart(info) {
 
 export function postInCart(payload) {
   return async function (dispatch) {
-    return await axios.post("http://localhost:3000/cart/addProduct", payload);
+    return await axios.post("https://apikoalaxy-production.up.railway.app/cart/addProduct", payload);
   };
 }
 
 export function DeleteProductCart(idProduct){
   return async function(dispatch){
-        return axios.delete(`http://localhost:3000/cart/delete/?productCardId=${idProduct}`)
+        return axios.delete(`https://apikoalaxy-production.up.railway.app/cart/delete/?productCardId=${idProduct}`)
       }
     }
 
 export function PutProductDash(idProduct){
   return async function(dispatch){
-      return axios.put(`http://localhost:3000/products/update/${idProduct}`)
+      return axios.put(`https://apikoalaxy-production.up.railway.app/products/update/${idProduct}`)
   }
 }
 
-export function DeleteProductCartLocalStorage(idProduct){
+export function DeleteProductCartLocalStorage(NameProduct){
     return async function(dispatch){
         dispatch({
           type: DELETE_PRODUCT_CART_LOCAL_STORAGE,
-          payload: idProduct,
+          payload: NameProduct,
         })
       }
     }
@@ -296,7 +299,7 @@ export function DeleteProductCartLocalStorage(idProduct){
   //action que trae todos los juegos
   export function GetUsers(){
     return async function (dispatch) {
-      let Json = await axios.get(`http://localhost:3000/users`);
+      let Json = await axios.get(`https://apikoalaxy-production.up.railway.app/users`);
       dispatch({
         type: GET_USERS,
         payload: Json.data,
@@ -354,11 +357,11 @@ export function DeleteProductCartLocalStorage(idProduct){
       };
     };
 
-    // ACTIONS REVIEWS
+    // REVIEWS
 
-    export function GetReviews (obj) {
+    export function GetReviews(productId){
       return async function(dispatch){
-        let json = axios.get(`http://localhost:3000/reviews`, obj)
+        let json = await axios.get(`https://apikoalaxy-production.up.railway.app/reviews/?productId=${productId}`)
         dispatch({
           type: GET_REVIEWS,
           payload: json.data
@@ -368,12 +371,7 @@ export function DeleteProductCartLocalStorage(idProduct){
 
     export function AddReview(payload){
       return async function (dispatch) {
-          const json = axios.post(`http://localhost:3000/reviews`, payload)
-          dispatch({
-            type: ADD_REVIEW,
-            payload: json.data
-          })
-        
+        return await axios.post(`https://apikoalaxy-production.up.railway.app/reviews`, payload)
       }
     }
 
@@ -391,13 +389,13 @@ export function DeleteProductCartLocalStorage(idProduct){
     
     export function PostPaypal(id){
       return async function(){
-        return axios.post(`http://localhost:3000/order/${id}`)
+        return axios.post(`https://apikoalaxy-production.up.railway.app/order/${id}`)
       }
     }
 
     export function PostMercadoPago(id){
       return async function(){
-        return axios.post(`http://localhost:3000/payment/${id}`)
+        return axios.post(`https://apikoalaxy-production.up.railway.app/payment/${id}`)
       }
     }
 
@@ -405,19 +403,19 @@ export function DeleteProductCartLocalStorage(idProduct){
 
     export function DeleteUserDashBoard(idUser){
       return async function(dispatch){
-            return axios.delete(`http://localhost:3000/users/${idUser}`)
+            return axios.delete(`https://apikoalaxy-production.up.railway.app/users/${idUser}`)
           }
     }
 
     export function PutUserAdminDashBoard(idUser){
       return async function(dispatch){
-          return axios.put(`http://localhost:3000/users/isadmin/${idUser}`)
+          return axios.put(`https://apikoalaxy-production.up.railway.app/users/isadmin/${idUser}`)
       }
     }
 
     export function PutUserBanDashBoard(idUser){
       return async function(dispatch){
-          return axios.put(`http://localhost:3000/users/ban/${idUser}`)
+          return axios.put(`https://apikoalaxy-production.up.railway.app/users/ban/${idUser}`)
       }
     }
 
@@ -433,11 +431,30 @@ export function DeleteProductCartLocalStorage(idProduct){
 
     export function GetOrderByID(id){
       return async function(dispatch){
-        let json = await axios.get(`http://localhost:3000/orderDetail/${id}`)
+        let json = await axios.get(`https://apikoalaxy-production.up.railway.app/orderDetail/${id}`)
         dispatch({
           type: GET_ORDER_ID,
           payload: json.data,
         })
       }
     }
-    
+
+    // RESETEAR CONTRASEÑA DE USUARIOS REGISTRADOS
+
+    export function ResetPassword(email){
+      return async function(){
+        return await axios.put('https://apikoalaxy-production.up.railway.app/auth/resetPassword', email)
+      }
+    }
+
+    // TRAER LOS PRODUCTOS DE LA BIBLIOTECA
+
+    export function GetProductsLibrary(id){
+      return async function(dispatch){
+        let json = await axios.get(`https://apikoalaxy-production.up.railway.app/library/${id}`);
+        dispatch({
+          type: GET_PRODUCTS_LIBRARY,
+          payload: json.data,
+        })
+      }
+    }
